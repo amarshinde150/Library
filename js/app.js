@@ -643,6 +643,10 @@ function subButtonClicked(id){
                             lastPopUp.innerHTML = '';
                             blurMeBhai.style.opacity = "100%";
                         })
+                        
+                        booksArray[Number(listOfId[2])][2] = 0;
+                        localStorage.setItem("booksList",JSON.stringify(booksArray));
+                        deleteBook();
                     }
                     else{
                         blurMeBhai.style.opacity = "30%";
