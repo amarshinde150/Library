@@ -211,7 +211,7 @@ function issueBook() {
                                 <p class="card-text notification" title="No. of copies">
                                     <span class="badge bg-secondary">${copies}</span>
                                 </p>
-                                <button id="button-${index}" type="button" class="btn btn-outline-secondary operatingButton" onclick="displayFunction(this.id)">Issue Book</button>
+                                <button id="issue-button-${index}" type="button" class="btn btn-outline-secondary operatingButton" onclick="subButtonClicked(this.id)">Issue Book</button>
                             </div>
                         </div>
                     </div>`
@@ -250,7 +250,6 @@ function issueBook() {
     });
     // addNewText.replaceWith();
 }
-
 
 function returnBook() {
     html = `
@@ -298,7 +297,7 @@ function returnBook() {
                                 <p class="card-text notification" title="No. of copies">
                                 <span class="badge bg-success">${copies}</span>
                                 </p>
-                                <button id="button-${index}" type="button" class="btn btn-outline-success operatingButton" onclick="displayFunction(this.id)">Return Book</button>
+                                <button id="return-button-${index}" type="button" class="btn btn-outline-success operatingButton" onclick="subButtonClicked(this.id)">Return Book</button>
                             </div>
                         </div>
                     </div>`
@@ -337,7 +336,6 @@ function returnBook() {
     });
     // addNewText.replaceWith();
 }
-
 
 function buttonToggle(id) {
     s1 = document.getElementById("1s");
@@ -378,52 +376,6 @@ function buttonToggle(id) {
 
                     element.style.display = "none";
                 }
-            }
-
-        });
-    });
-}
-
-function listDeleteBookWithSearchBar() {
-    html = `
-    <div class="row">`
-    let booksList = localStorage.getItem("booksList");
-    if (booksList == undefined || booksList == null || booksList == "[]") {
-        booksObjArray = [];
-    }
-    else {
-        booksObjArray = JSON.parse(booksList);
-    }
-    booksObjArray.forEach(element => {
-        title = element[0];
-        author = element[1];
-        description = element[2];
-        html += `<div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="h5 card-title">${title}</p>
-                            <p class="card-text"><small class="text-muted">-by ${author}</small></p>
-                            <p class="card-text">${description}.</p>
-                            ${x}
-                        </div>
-                    </div>
-                </div>`
-    });
-
-
-    html += `</div>`;
-    addNewText = document.getElementById("addNewText");
-    addNewText.innerHTML = html;
-
-    returnBookInput = document.getElementById("returnBookInput");
-    returnBookInput.addEventListener("input", function () {
-        value = returnBookInput.value;
-        Array.from(addNewText.children[0].children, function (element) {
-            if (element.children[0].children[0].children[0].innerText.toLowerCase().includes(value.toLowerCase()) || element.children[0].children[0].children[1].innerText.toLowerCase().includes(value.toLowerCase())) {
-                element.style.display = "block";
-            }
-            else {
-                element.style.display = "none";
             }
 
         });
@@ -476,7 +428,7 @@ function deleteBook() {
                                 <p class="card-text notification" title="No. of copies">
                                 <span class="badge bg-danger">${copies}</span>
                                 </p>
-                                <button id="button-${index}" type="button" class="btn btn-outline-danger operatingButton" onclick="displayFunction(this.id)">Delete Book</button>
+                                <button id="delete-button-${index}" type="button" class="btn btn-outline-danger operatingButton" onclick="subButtonClicked(this.id)">Delete Book</button>
                             </div>
                         </div>
                     </div>`
@@ -514,4 +466,20 @@ function deleteBook() {
         });
     });
     // addNewText.replaceWith();
+}
+
+function subButtonClicked(id){
+    listOfId = id.split('-');
+    switch(listOfId[0]){
+        case 'issue':
+            console.log("Issue True");
+            
+            break;
+        case 'return':
+            console.log("Return True");
+            break;
+        case 'delete':
+            console.log("Delete True");
+            break;
+    }
 }
