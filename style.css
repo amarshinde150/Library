@@ -49,6 +49,13 @@
 .card-position{
     position: relative;
 }
+
+.notification{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    cursor: pointer;
+}
 #footer{
     display: flex;
     justify-content: center;
