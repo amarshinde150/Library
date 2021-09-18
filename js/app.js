@@ -200,23 +200,27 @@ function listBookWithSearchBar(x) {
     else {
         booksObjArray = JSON.parse(booksList);
     }
-    booksObjArray.forEach(element => {
-        title = element[0];
-        author = element[1];
-        description = element[2];
-        html += `<div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="h5 card-title">${title}</p>
-                            <p class="card-text"><small class="text-muted">-by ${author}</small></p>
-                            <p class="card-text">${description}.</p>
-                            ${x}
+    if(booksObjArray.length==0){
+        html+=`No Books To Display! Use "Add Book" section to add books to your library`;
+    }
+    else{
+        booksObjArray.forEach(element => {
+            title = element[0];
+            author = element[1];
+            description = element[2];
+            html += `<div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="h5 card-title">${title}</p>
+                                <p class="card-text"><small class="text-muted">-by ${author}</small></p>
+                                <p class="card-text">${description}.</p>
+                                ${x}
+                            </div>
                         </div>
-                    </div>
-                </div>`
-    });
-
-
+                    </div>`
+        });
+    }
+    
     html += `</div>`;
     addNewText = document.getElementById("addNewText");
     addNewText.innerHTML = html;
