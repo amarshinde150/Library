@@ -56,6 +56,32 @@
     right: 2px;
     cursor: pointer;
 }
+
+#lastPopUp{
+    position: fixed;
+    top: 100px;
+    width: 73%;
+}
+
+.lastPopUpContent{
+    margin: 10px auto;
+    width: 50%;
+}
+
+.lastPopUpContent.card-body.mb-3{
+    margin-top: 25px;
+}
+
+#crossMarkPopUp{
+    position: absolute;
+    right: 10px;
+}
+#margin53{
+    margin-top: 53px;
+}
+#blurMeBhai{
+    opacity: 100%;
+}
 #footer{
     display: flex;
     justify-content: center;

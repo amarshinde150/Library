@@ -33,7 +33,6 @@ function displayFunction(id) {
     }
 }
 
-
 function addBook() {
     html = `<div class="mb-3">
     <input type="text" class="form-control form-outline-danger" id="exampleFormControlInput1" placeholder="Title of Book">
@@ -185,7 +184,7 @@ function issueBook() {
     crossMark = document.getElementById("crossMark");
     crossMark.className = "btn btn-outline-secondary operatingButton";
 
-    html = `<div class="row">`
+    html = `<div class="row" id="blurMeBhai">`
     let booksList = localStorage.getItem("booksList");
     if (booksList == undefined || booksList == null || booksList == "[]") {
         booksObjArray = [];
@@ -218,7 +217,11 @@ function issueBook() {
         });
     }
 
-    html += `</div>`;
+    html += `
+    </div>
+    <div id="lastPopUp">
+
+    </div>`;
     addNewText = document.getElementById("addNewText");
     addNewText.innerHTML = html;
 
@@ -271,7 +274,7 @@ function returnBook() {
     crossMark = document.getElementById("crossMark");
     crossMark.className = "btn btn-outline-success operatingButton";
 
-    html = `<div class="row">`
+    html = `<div class="row" id="blurMeBhai">`
     let booksList = localStorage.getItem("booksList");
     if (booksList == undefined || booksList == null || booksList == "[]") {
         booksObjArray = [];
@@ -304,7 +307,10 @@ function returnBook() {
         });
     }
 
-    html += `</div>`;
+    html += `</div>
+    <div id="lastPopUp">
+
+    </div>`;
     addNewText = document.getElementById("addNewText");
     addNewText.innerHTML = html;
 
@@ -470,13 +476,125 @@ function deleteBook() {
 
 function subButtonClicked(id){
     listOfId = id.split('-');
+    booksList = localStorage.getItem('booksList');
+    booksArray = JSON.parse(booksList);
+    numberOfBooks = Number(booksArray[Number(listOfId[2])][2]);
     switch(listOfId[0]){
         case 'issue':
-            console.log("Issue True");
-            
+            console.log(numberOfBooks);
+            lastPopUp = document.getElementById("lastPopUp");
+            blurMeBhai = document.getElementById("blurMeBhai");
+            blurMeBhai.style.opacity = "30%";
+            lastPopUp.innerHTML = `<div class="card text-center lastPopUpContent">
+            <div class="card-body">
+    
+                <button id="crossMarkPopUp" type="button" class="btn btn-outline-secondary"><img id="crossMarkImg"
+                src="img/cross.png" alt="" srcset=""></button>
+    
+                <div class="mb-3" id="margin53">
+                    <input type="number" class="form-control" id="noOfCopiesInputId" placeholder="No. Of Copies You Want To Issue">
+                </div>
+                <a id="numberOfCopyButton" class="btn btn-primary">Issue</a>
+            </div>
+            </div>`;
+            issueValue = 0
+            crossMarkPopUp = document.getElementById("crossMarkPopUp");
+            crossMarkPopUp.addEventListener("click",function(){
+                lastPopUp.innerHTML = '';
+                blurMeBhai.style.opacity = "100%";
+            });
+            numberOfCopyButton = document.getElementById("numberOfCopyButton");
+            numberOfCopyButton.addEventListener("click",function(){
+                noOfCopiesInputId = document.getElementById("noOfCopiesInputId");
+                issueValue = Number(noOfCopiesInputId.value);
+                lastPopUp.innerHTML = '';
+                blurMeBhai.style.opacity = "100%";
+                if(issueValue>numberOfBooks || numberOfBooks<=0){
+                    console.log("Inside")
+                    blurMeBhai.style.opacity = "30%";
+                    lastPopUp.innerHTML = `<div class="card text-center lastPopUpContent">
+                                            <div class="card-body">
+                                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>Error!</strong> Issue value is More than No. Of books available
+                                            <button type="button" id="NowClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                            </div>
+                                            </div>`
+                    NowClose = document.getElementById("NowClose");
+                    NowClose.addEventListener("click",function(){
+                    lastPopUp.innerHTML = '';
+                    blurMeBhai.style.opacity = "100%";
+                    })
+                }
+                else{
+                    console.log("Inside")
+                    blurMeBhai.style.opacity = "30%";
+                    lastPopUp.innerHTML = `<div class="card text-center lastPopUpContent">
+                                            <div class="card-body">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <strong>Issued.</strong> You can Take ${issueValue} Books from counter
+                                            <button type="button" id="NowClose2"  class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                          </div>
+                                            </div>
+                                            </div>`;
+                    NowClose2 = document.getElementById("NowClose2");
+                    NowClose2.addEventListener("click",function(){
+                    lastPopUp.innerHTML = '';
+                    blurMeBhai.style.opacity = "100%";
+                    booksArray[Number(listOfId[2])][2] = (numberOfBooks - issueValue);
+                    localStorage.setItem("booksList",JSON.stringify(booksArray));
+                    issueBook();
+                    })
+            }
+        });
             break;
+
+
         case 'return':
-            console.log("Return True");
+                lastPopUp = document.getElementById("lastPopUp");
+                blurMeBhai = document.getElementById("blurMeBhai");
+                blurMeBhai.style.opacity = "30%";
+                lastPopUp.innerHTML = `
+                    <div class="card text-center lastPopUpContent">
+                        <div class="card-body">
+                            <button id="crossMarkPopUp" type="button" class="btn btn-outline-secondary"><img id="crossMarkImg"
+                            src="img/cross.png" alt="" srcset=""></button>
+                            <div class="mb-3" id="margin53">
+                                <input type="number" class="form-control" id="noOfCopiesInputIdReturn" placeholder="No. Of Copies You Want Return">
+                            </div>
+                            <a id="numberOfCopyButtonReturn" class="btn btn-primary">Return</a>
+                        </div>
+                    </div>`;
+                returnValue = 0;
+                crossMarkPopUp = document.getElementById("crossMarkPopUp");
+                crossMarkPopUp.addEventListener("click",function(){
+                    lastPopUp.innerHTML = '';
+                    blurMeBhai.style.opacity = "100%";
+                });
+                numberOfCopyButtonReturn = document.getElementById("numberOfCopyButtonReturn");
+                numberOfCopyButtonReturn.addEventListener("click",function(){
+                    noOfCopiesInputIdReturn = document.getElementById("noOfCopiesInputIdReturn");
+                    returnValue = Number(noOfCopiesInputIdReturn.value);
+                    lastPopUp.innerHTML = '';
+                    blurMeBhai.style.opacity = "30%";
+                    lastPopUp.innerHTML = `<div class="card text-center lastPopUpContent">
+                                            <div class="card-body">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <strong>Returned.</strong> You Returned ${returnValue} Books Successfully
+                                            <button type="button" id="NowClose3"  class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                          </div>
+                                            </div>
+                                            </div>`;
+                                            NowClose3 = document.getElementById("NowClose3");
+                                            NowClose3.addEventListener("click",function(){
+                                                lastPopUp.innerHTML = '';
+                                                blurMeBhai.style.opacity = "100%";
+                                                booksArray[Number(listOfId[2])][2] = (numberOfBooks + returnValue);
+                                                localStorage.setItem("booksList",JSON.stringify(booksArray));
+                                                returnBook();
+                                            })
+                
+                    });
             break;
         case 'delete':
             console.log("Delete True");
