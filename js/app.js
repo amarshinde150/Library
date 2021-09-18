@@ -408,7 +408,7 @@ function deleteBook() {
     crossMark = document.getElementById("crossMark");
     crossMark.className = "btn btn-outline-danger operatingButton";
 
-    html = `<div class="row">`
+    html = `<div class="row" id="blurMeBhai">`
     let booksList = localStorage.getItem("booksList");
     if (booksList == undefined || booksList == null || booksList == "[]") {
         booksObjArray = [];
@@ -441,7 +441,10 @@ function deleteBook() {
         });
     }
 
-    html += `</div>`;
+    html += `</div>
+    <div id="lastPopUp">
+
+    </div>`;
     addNewText = document.getElementById("addNewText");
     addNewText.innerHTML = html;
 
@@ -596,8 +599,71 @@ function subButtonClicked(id){
                 
                     });
             break;
-        case 'delete':
-            console.log("Delete True");
-            break;
+            case 'delete':
+                console.log("Deleting")
+                lastPopUp = document.getElementById("lastPopUp");
+                blurMeBhai = document.getElementById("blurMeBhai");
+                blurMeBhai.style.opacity = "30%";
+                lastPopUp.innerHTML = `<div class="card text-center lastPopUpContent">
+                <div class="card-body">
+        
+                    <button id="crossMarkPopUp" type="button" class="btn btn-outline-secondary"><img id="crossMarkImg"
+                    src="img/cross.png" alt="" srcset=""></button>
+        
+                    <div class="mb-3" id="margin53">
+                        <input type="number" class="form-control" id="noOfCopiesInputIdDeleted" placeholder="No. Of Books You wanted to Delete">
+                    </div>
+                    <a id="numberOfCopyButtonDelete" class="btn btn-primary">Delete</a>
+                </div>
+                </div>`;
+                deleteValue = 0
+                crossMarkPopUp = document.getElementById("crossMarkPopUp");
+                crossMarkPopUp.addEventListener("click",function(){
+                    lastPopUp.innerHTML = '';
+                    blurMeBhai.style.opacity = "100%";
+                });
+                numberOfCopyButtonDelete = document.getElementById("numberOfCopyButtonDelete");
+                numberOfCopyButtonDelete.addEventListener("click",function(){
+                    noOfCopiesInputIdDeleted = document.getElementById("noOfCopiesInputIdDeleted");
+                    deleteValue = Number(noOfCopiesInputIdDeleted.value);
+                    lastPopUp.innerHTML = '';
+                    blurMeBhai.style.opacity = "100%";
+                    if(deleteValue>numberOfBooks){
+                        blurMeBhai.style.opacity = "30%";
+                        lastPopUp.innerHTML = `<div class="card text-center lastPopUpContent">
+                                                <div class="card-body">
+                                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                <strong>Deleted!</strong> Deleted all Books. 0 Books available
+                                                <button type="button" id="NowClose4" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
+                                                </div>
+                                                </div>`
+                        NowClose4 = document.getElementById("NowClose4");
+                        NowClose4.addEventListener("click",function(){
+                            lastPopUp.innerHTML = '';
+                            blurMeBhai.style.opacity = "100%";
+                        })
+                    }
+                    else{
+                        blurMeBhai.style.opacity = "30%";
+                        lastPopUp.innerHTML = `<div class="card text-center lastPopUpContent">
+                                                <div class="card-body">
+                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <strong>Deleted.</strong> Deleted ${deleteValue} Books from Library
+                                                <button type="button" id="NowClose4"  class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                              </div>
+                                                </div>
+                                                </div>`;
+                                                NowClose4 = document.getElementById("NowClose4");
+                                                NowClose4.addEventListener("click",function(){
+                        lastPopUp.innerHTML = '';
+                        blurMeBhai.style.opacity = "100%";
+                        booksArray[Number(listOfId[2])][2] = (numberOfBooks - deleteValue);
+                        localStorage.setItem("booksList",JSON.stringify(booksArray));
+                        deleteBook();
+                        })
+                }
+            });
+                break;
     }
 }
